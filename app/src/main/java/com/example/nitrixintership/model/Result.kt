@@ -1,8 +1,11 @@
 package com.example.nitrixintership.model
 
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.android.parcel.Parcelize
 
+@Parcelize
 data class Result(
     @SerializedName("description")
     val description: String,
@@ -14,4 +17,4 @@ data class Result(
     val thumb: String,
     @SerializedName("title")
     val title: String
-)
+):Parcelable

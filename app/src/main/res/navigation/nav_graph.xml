@@ -9,5 +9,18 @@
         android:id="@+id/movieFragment"
         android:name="com.example.nitrixintership.fragments.MovieFragment"
         android:label="fragment_movie"
-        tools:layout="@layout/fragment_movie" />
+        tools:layout="@layout/fragment_movie" >
+        <action
+            android:id="@+id/action_movieFragment_to_moviePlayer"
+            app:destination="@id/moviePlayer" />
+    </fragment>
+    <fragment
+        android:id="@+id/moviePlayer"
+        android:name="com.example.nitrixintership.fragments.MoviePlayer"
+        android:label="fragment_movie_player"
+        tools:layout="@layout/fragment_movie_player" >
+        <argument
+            android:name="data"
+            app:argType="com.example.nitrixintership.model.Result" />
+    </fragment>
 </navigation>
