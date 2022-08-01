@@ -16,11 +16,14 @@
     </fragment>
     <fragment
         android:id="@+id/moviePlayer"
-        android:name="com.example.nitrixintership.fragments.MoviePlayer"
+        android:name="com.example.nitrixintership.fragments.MoviePlayerFragment"
         android:label="fragment_movie_player"
         tools:layout="@layout/fragment_movie_player" >
         <argument
             android:name="data"
             app:argType="com.example.nitrixintership.model.Result" />
+        <action
+            android:id="@+id/action_moviePlayer_to_movieFragment"
+            app:destination="@id/movieFragment" />
     </fragment>
 </navigation>

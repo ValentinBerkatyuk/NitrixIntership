@@ -2,12 +2,9 @@ package com.example.nitrixintership.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.nitrixintership.databinding.ListmoviesRowBinding
-import com.example.nitrixintership.fragments.MovieFragmentDirections
 import com.example.nitrixintership.model.MovieResult
 import com.example.nitrixintership.model.Result
 import com.example.nitrixintership.utills.MovieDiffUtil
@@ -18,6 +15,11 @@ class MoviesListAdapter : RecyclerView.Adapter<MoviesListAdapter.MyViewHolder>()
 
     class MyViewHolder(val binding: ListmoviesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(data: Result) {
+            binding.movies = data
+            binding.executePendingBindings()
+        }
 
         companion object {
             fun from(parent: ViewGroup): MyViewHolder {
@@ -33,19 +35,8 @@ class MoviesListAdapter : RecyclerView.Adapter<MoviesListAdapter.MyViewHolder>()
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        holder.binding.apply {
-            val item = movies[position]
-            textViewTitle.text = item.title
-            textViewSubtitle.text = item.subtitle
-            textViewDescription.text = item.description
-            Glide.with(holder.itemView.context)
-                .load(item.thumb)
-                .into(imageViewRow)
-            rowCardView.setOnClickListener {
-                val action = MovieFragmentDirections.actionMovieFragmentToMoviePlayer(item)
-                root.findNavController().navigate(action)
-            }
-        }
+        val currentMovie = movies[position]
+        holder.bind(currentMovie)
     }
 
     override fun getItemCount(): Int {
