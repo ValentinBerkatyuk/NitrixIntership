@@ -8,6 +8,7 @@ import com.example.nitrixintership.repository.localdata.MovieEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -28,17 +29,19 @@ class MainViewModel @Inject constructor(
     //Retrofit
     var movieGetResponse: MutableLiveData<MovieResult> = MutableLiveData()
 
-    fun getMovies() = viewModelScope.launch {
+    fun getMovies() = viewModelScope.launch(Dispatchers.IO) {
         moviesGet()
     }
 
     private suspend fun moviesGet() {
         val response = repository.remote.getMovies()
         val request: (Response<MovieResult>) -> MovieResult? = ::apiRequest
-        movieGetResponse.value = request(response)
-        val movieResult = movieGetResponse.value
-        if(movieResult != null){
-            cacheMovies(movieResult)
+        movieGetResponse.postValue(request(response))
+        withContext(Dispatchers.Main) {
+            val movieResult = movieGetResponse.value
+            if (movieResult != null) {
+                cacheMovies(movieResult)
+            }
         }
     }
 

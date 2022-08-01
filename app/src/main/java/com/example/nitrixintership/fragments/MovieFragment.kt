@@ -15,6 +15,7 @@ import com.example.nitrixintership.databinding.FragmentMovieBinding
 import com.example.nitrixintership.utills.observeOnce
 import com.example.nitrixintership.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -35,6 +36,8 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMovieBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mainViewModel = mainViewModel
         return binding.root
     }
 
@@ -50,7 +53,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
     }
 
     private fun readDatabase() {
-        lifecycleScope.launch {
+        lifecycleScope.launch(Dispatchers.Unconfined) {
             mainViewModel.readMovies.observeOnce(viewLifecycleOwner) { database ->
                 if (database.isNotEmpty()) {
                     Log.d("fragment", "readDatabase called")

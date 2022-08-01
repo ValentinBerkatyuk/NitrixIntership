@@ -1,45 +1,32 @@
 package com.example.nitrixintership.fragments
 
 
-import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import androidx.activity.OnBackPressedCallback
-import androidx.navigation.findNavController
-import androidx.navigation.fragment.findNavController
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import com.example.nitrixintership.R
-import com.example.nitrixintership.databinding.FragmentMoviePlayerBinding
 import com.example.nitrixintership.utills.Constants.Companion.KEY_PLAYER_POSITION
 import com.example.nitrixintership.utills.Constants.Companion.KEY_PLAY_WHEN_READY
+import com.example.nitrixintership.viewmodel.PlayerViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.ui.StyledPlayerView
-import kotlinx.android.synthetic.main.custom_playback_view.*
-import kotlinx.android.synthetic.main.fragment_movie_player.*
-import kotlinx.android.synthetic.main.fragment_movie_player.view.*
 
 
 class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Listener {
 
-    private var _binding: FragmentMoviePlayerBinding? = null
-    private val binding get() = _binding!!
     private val args by navArgs<MoviePlayerFragmentArgs>()
     private lateinit var exoPlayer: ExoPlayer
     private lateinit var playerView: StyledPlayerView
+    private lateinit var playerViewModel: PlayerViewModel
 
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        View = FragmentMoviePlayerBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        playerViewModel = ViewModelProvider(requireActivity())[PlayerViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,6 +34,7 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
         val videoPlayer = getView()?.findViewById(R.id.video_player) as StyledPlayerView
         setupPlayer(videoPlayer)
         mp4Play()
+        requestApiData()
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
@@ -58,28 +46,46 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
         exoPlayer.play()
     }
 
-    private fun mp4Play() {
-        val mediaFile = MediaItem.fromUri(args.data.sourcevideo)
-        exoPlayer.addMediaItem(mediaFile)
-        exoPlayer.prepare()
-    }
-
     override fun onStop() {
         super.onStop()
         exoPlayer.release()
     }
 
-    private fun setupPlayer(videoPlayer:StyledPlayerView) {
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putLong(KEY_PLAYER_POSITION, exoPlayer.currentPosition)
+        outState.putInt(KEY_PLAY_WHEN_READY, exoPlayer.currentMediaItemIndex)
+    }
+
+    private fun mp4Play() {
+        val listItems:List<MediaItem>
+        listItems = mutableListOf(
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4"),
+            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
+        )
+            exoPlayer.setMediaItems(listItems)
+            exoPlayer.prepare()
+    }
+
+    private fun setupPlayer(videoPlayer: StyledPlayerView) {
         exoPlayer = ExoPlayer.Builder(requireContext()).build()
         playerView = videoPlayer
         playerView.player = exoPlayer
         exoPlayer.addListener(this)
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putLong(KEY_PLAYER_POSITION, exoPlayer.currentPosition)
-        outState.putInt(KEY_PLAY_WHEN_READY, exoPlayer.currentMediaItemIndex)
+    private fun requestApiData() {
+        playerViewModel.getVideos()
     }
 
 }
