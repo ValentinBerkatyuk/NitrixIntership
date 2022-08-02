@@ -2,7 +2,6 @@ package com.example.nitrixintership.fragments
 
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.lifecycle.ViewModelProvider
@@ -10,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.example.nitrixintership.R
 import com.example.nitrixintership.utills.Constants.Companion.KEY_PLAYER_POSITION
 import com.example.nitrixintership.utills.Constants.Companion.KEY_PLAY_WHEN_READY
+import com.example.nitrixintership.utills.observeOnce
 import com.example.nitrixintership.viewmodel.PlayerViewModel
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
@@ -28,6 +28,7 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
         super.onCreate(savedInstanceState)
         playerViewModel = ViewModelProvider(requireActivity())[PlayerViewModel::class.java]
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,22 +60,10 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
     }
 
     private fun mp4Play() {
-        val listItems:List<MediaItem>
-        listItems = mutableListOf(
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerMeltdowns.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/Sintel.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/SubaruOutbackOnStreetAndDirt.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/TearsOfSteel.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/VolkswagenGTIReview.mp4"),
-            MediaItem.fromUri("http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"),
-        )
-            exoPlayer.setMediaItems(listItems)
-            exoPlayer.prepare()
+        val firstMedia=MediaItem.fromUri(args.data.sourcevideo)
+        exoPlayer.addMediaItem(firstMedia)
+        exoPlayer.prepare()
+        exoPlayer.play()
     }
 
     private fun setupPlayer(videoPlayer: StyledPlayerView) {
@@ -86,6 +75,15 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
 
     private fun requestApiData() {
         playerViewModel.getVideos()
+        playerViewModel.listVideos.observeOnce(viewLifecycleOwner) {
+           for (i in 0..10) {
+                if(args.data.id == it.result[i].id) continue
+               exoPlayer.addMediaItem(
+                    it.result[i].id,
+                    MediaItem.fromUri(it.result[i].video)
+                )
+            }
+        }
     }
 
 }

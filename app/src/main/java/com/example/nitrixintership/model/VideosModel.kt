@@ -1,5 +1,10 @@
 package com.example.nitrixintership.model
 
+import com.google.gson.annotations.SerializedName
+
 data class VideosModel(
-    val list: String
+    @SerializedName("id")
+    val id:Int,
+    @SerializedName("video")
+    val video: String
 )

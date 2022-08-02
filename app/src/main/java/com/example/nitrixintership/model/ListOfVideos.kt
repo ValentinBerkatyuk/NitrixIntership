@@ -1,5 +1,8 @@
 package com.example.nitrixintership.model
 
+import com.google.gson.annotations.SerializedName
+
 class ListOfVideos(
-    val list: List<VideosModel>
+    @SerializedName("result")
+    val result: List<VideosModel>
 )

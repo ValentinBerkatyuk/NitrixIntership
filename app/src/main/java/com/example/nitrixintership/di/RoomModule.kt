@@ -2,7 +2,6 @@ package com.example.nitrixintership.di
 
 import android.content.Context
 import androidx.room.Room
-import androidx.room.RoomDatabase
 import com.example.nitrixintership.repository.localdata.MovieDatabase
 import com.example.nitrixintership.utills.Constants.Companion.DATABASE_NAME
 import dagger.Module

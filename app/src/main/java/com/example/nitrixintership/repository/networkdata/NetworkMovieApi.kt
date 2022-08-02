@@ -7,9 +7,9 @@ import retrofit2.http.GET
 
 interface NetworkMovieApi {
 
-    @GET("/getMovies")
+    @GET("/getMovie")
     suspend fun getMovies(): Response<MovieResult>
 
-    @GET("/getVideos")
+    @GET("/getVideo")
     suspend fun getVideos(): Response<ListOfVideos>
 }

@@ -13,7 +13,7 @@ class MoviesListAdapter : RecyclerView.Adapter<MoviesListAdapter.MyViewHolder>()
 
     private var movies = emptyList<Result>()
 
-    class MyViewHolder(val binding: ListmoviesRowBinding) :
+    class MyViewHolder(private val binding: ListmoviesRowBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(data: Result) {

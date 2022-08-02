@@ -7,6 +7,8 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class Result(
+    @SerializedName("id")
+    val id:Int,
     @SerializedName("description")
     val description: String,
     @SerializedName("sourcevideo")

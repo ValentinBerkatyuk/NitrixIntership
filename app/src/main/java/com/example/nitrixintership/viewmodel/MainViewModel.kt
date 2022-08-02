@@ -6,9 +6,7 @@ import com.example.nitrixintership.model.MovieResult
 import com.example.nitrixintership.repository.Repository
 import com.example.nitrixintership.repository.localdata.MovieEntity
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import retrofit2.Response
 import javax.inject.Inject
 
@@ -43,6 +41,11 @@ class MainViewModel @Inject constructor(
                 cacheMovies(movieResult)
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.coroutineContext.cancelChildren()
     }
 
     private fun cacheMovies(movieResult: MovieResult){
