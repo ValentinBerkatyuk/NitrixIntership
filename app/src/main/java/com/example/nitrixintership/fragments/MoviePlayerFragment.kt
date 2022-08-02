@@ -76,7 +76,7 @@ class MoviePlayerFragment : Fragment(R.layout.fragment_movie_player), Player.Lis
     private fun requestApiData() {
         playerViewModel.getVideos()
         playerViewModel.listVideos.observeOnce(viewLifecycleOwner) {
-           for (i in 0..10) {
+           for (i in 0 until it.result.size) {
                 if(args.data.id == it.result[i].id) continue
                exoPlayer.addMediaItem(
                     it.result[i].id,
