@@ -1,7 +1,8 @@
-package com.example.nitrixintership
+package com.example.nitrixintership.activities
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.nitrixintership.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

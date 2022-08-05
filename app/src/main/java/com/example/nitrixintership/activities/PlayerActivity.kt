@@ -1,4 +1,4 @@
-package com.example.nitrixintership
+package com.example.nitrixintership.activities
 
 import android.content.ComponentName
 import android.content.Context
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
 import androidx.navigation.navArgs
+import com.example.nitrixintership.R
 import com.example.nitrixintership.service.AudioService
 import com.example.nitrixintership.utills.Constants.Companion.KEY_DATA
 import com.example.nitrixintership.utills.Constants.Companion.KEY_PLAYER_POSITION
