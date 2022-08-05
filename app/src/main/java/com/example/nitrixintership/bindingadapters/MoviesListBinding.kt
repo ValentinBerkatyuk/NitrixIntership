@@ -16,7 +16,7 @@ class MoviesListBinding {
         @JvmStatic
         fun onMovieClickListener(movieRowLayout: ConstraintLayout, data: Result) =
             movieRowLayout.setOnClickListener {
-                val action = MovieFragmentDirections.actionMovieFragmentToMoviePlayer(data)
+                val action = MovieFragmentDirections.actionMovieFragmentToPlayerActivity(data)
                 movieRowLayout.findNavController().navigate(action)
             }
 

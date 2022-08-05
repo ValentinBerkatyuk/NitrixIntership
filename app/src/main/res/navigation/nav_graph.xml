@@ -11,19 +11,16 @@
         android:label="fragment_movie"
         tools:layout="@layout/fragment_movie" >
         <action
-            android:id="@+id/action_movieFragment_to_moviePlayer"
-            app:destination="@id/moviePlayer" />
+            android:id="@+id/action_movieFragment_to_playerActivity"
+            app:destination="@id/playerActivity" />
     </fragment>
-    <fragment
-        android:id="@+id/moviePlayer"
-        android:name="com.example.nitrixintership.fragments.MoviePlayerFragment"
-        android:label="fragment_movie_player"
-        tools:layout="@layout/fragment_movie_player" >
+    <activity
+        android:id="@+id/playerActivity"
+        android:name="com.example.nitrixintership.PlayerActivity"
+        android:label="activity_player"
+        tools:layout="@layout/activity_player">
         <argument
             android:name="data"
             app:argType="com.example.nitrixintership.model.Result" />
-        <action
-            android:id="@+id/action_moviePlayer_to_movieFragment"
-            app:destination="@id/movieFragment" />
-    </fragment>
+    </activity>
 </navigation>

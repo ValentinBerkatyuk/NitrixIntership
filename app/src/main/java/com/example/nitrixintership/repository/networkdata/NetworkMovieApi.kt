@@ -2,6 +2,7 @@ package com.example.nitrixintership.repository.networkdata
 
 import com.example.nitrixintership.model.ListOfVideos
 import com.example.nitrixintership.model.MovieResult
+import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.GET
 
@@ -11,5 +12,5 @@ interface NetworkMovieApi {
     suspend fun getMovies(): Response<MovieResult>
 
     @GET("/getVideo")
-    suspend fun getVideos(): Response<ListOfVideos>
+    fun getVideos(): Call<ListOfVideos>
 }

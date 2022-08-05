@@ -8,7 +8,7 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Result(
     @SerializedName("id")
-    val id:Int,
+    val id: Int,
     @SerializedName("description")
     val description: String,
     @SerializedName("sourcevideo")
@@ -19,4 +19,4 @@ data class Result(
     val thumb: String,
     @SerializedName("title")
     val title: String
-):Parcelable
+) : Parcelable

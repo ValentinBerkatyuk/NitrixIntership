@@ -4,9 +4,9 @@ import androidx.recyclerview.widget.DiffUtil
 import com.example.nitrixintership.model.Result
 
 class MovieDiffUtil(
-    private val oldList:List<Result>,
-    private val newList:List<Result>
-): DiffUtil.Callback() {
+    private val oldList: List<Result>,
+    private val newList: List<Result>
+) : DiffUtil.Callback() {
     override fun getOldListSize(): Int {
         return oldList.size
     }

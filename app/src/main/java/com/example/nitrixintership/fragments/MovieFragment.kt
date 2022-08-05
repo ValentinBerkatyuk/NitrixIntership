@@ -78,6 +78,7 @@ class MovieFragment : Fragment(R.layout.fragment_movie) {
         }
     }
 
+
     private fun loadDataFromCache() {
         lifecycleScope.launch {
             mainViewModel.readMovies.observe(viewLifecycleOwner) { database ->

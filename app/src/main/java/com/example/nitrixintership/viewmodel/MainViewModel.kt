@@ -43,17 +43,17 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren()
-    }
-
-    private fun cacheMovies(movieResult: MovieResult){
+    private fun cacheMovies(movieResult: MovieResult) {
         val movieEntity = MovieEntity(movieResult)
         insertMovies(movieEntity)
     }
 
     private fun apiRequest(response: Response<MovieResult>): MovieResult? {
         return response.body()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.coroutineContext.cancelChildren()
     }
 }
